@@ -7,7 +7,7 @@ public class Main {
         float checkBalCharge = 1.00f;
         String choose2;
         String proceedTwo;
-        int pins[] = {111221, 111222, 111223};
+        int[] pins = {111221, 111222, 111223};
         boolean access = false;
         int count = 0;
         int pinNum;
@@ -35,11 +35,12 @@ public class Main {
                 System.out.println("3. Withdraw");
                 System.out.println("4. Exit");
                 System.out.print("Choose transaction: ");
-                String choose = scanner.nextLine();
+                int choose = scanner.nextInt();
+                scanner.nextLine();
                 System.out.println();
 
 
-                if (choose.equalsIgnoreCase("1")) {
+                if (choose == 1) {
                     if (balance > 0) {
                         System.out.println("Charge to check balance is 1.00 (pesos). Proceed? Y/N?");
                         String proceed = scanner.nextLine();
@@ -52,24 +53,30 @@ public class Main {
                     } else {
                         System.out.println("Zero balance! try to deposit first");
                     }
-                } else if (choose.equalsIgnoreCase("2")) {
+                } else if (choose == 2) {
                     System.out.println("Enter amount: ");
                     int deposit = scanner.nextInt();
                     scanner.nextLine();
-                    balance += deposit;
-                    System.out.println("Successful, your new balance is: " + balance);
-                } else if (choose.equalsIgnoreCase("3")) {
-                    if (balance > 15) {
+                    if (deposit > 0) {
+                        balance += deposit;
+                        System.out.println("Successful, your new balance is: " + balance);
+                    } else {
+                        System.out.println("Error! Input an amount to deposit");
+                    }
+                } else if (choose == 3) {
+                    if (balance > withdrawCharge) {
                         System.out.println("Charge for withdrawal is 15.00 (Pesos). Proceed? Y/N?: ");
                         proceedTwo = scanner.nextLine();
                         if (proceedTwo.equalsIgnoreCase("y")) {
                             System.out.println("Enter amount: ");
                             int withdraw = scanner.nextInt();
                             scanner.nextLine();
-                            if ((withdraw + withdrawCharge) <= balance) {
+                            if ((withdraw + withdrawCharge) <= balance && withdraw > 0) {
+                                previousBalance = balance + withdraw + withdrawCharge;
+
                                 balance -= withdraw;
                                 balance -= withdrawCharge;
-                                previousBalance = balance + withdraw + withdrawCharge;
+
                                 System.out.println();
                                 System.out.println("SUCCESSFUL");
                                 System.out.println();
@@ -83,8 +90,11 @@ public class Main {
                                 System.out.println("Please get your card and wait for the money to come out. " +
                                         "Do not accept help from the strangers");
                                 return;
-                            } else {
-                                System.out.println("Insufficient Balance! Please try again!");
+                            } else if (withdraw <= 0){
+                                System.out.println("Input an amount!");
+                            }
+                            else {
+                                System.out.println("Insufficient Balance or you did not input an amount!");
                             }
                         } else if (proceedTwo.equalsIgnoreCase("n")) {
                             System.out.println("Cancelled!");
@@ -92,7 +102,7 @@ public class Main {
                     } else {
                         System.out.println("Less than 15 pesos balance. Try to deposit first. Thanks!");
                     }
-                } else if (choose.equalsIgnoreCase("4")) {
+                } else if (choose == 4) {
                     System.out.println("Thank you for using ATM MACHINE! See yah!");
                     return;
                 } else {
