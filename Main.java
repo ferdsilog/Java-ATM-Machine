@@ -129,6 +129,8 @@ public class Main {
     System.out.println("Account temporary suspended! ");
 
             scanner.close();
+
+            return;
     }
 }
 
